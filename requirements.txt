@@ -1,0 +1,28 @@
+# RoadMap QA — Technology Stack Dependencies
+# Tailored for SimForge Mapping Analyst (Autonomous Vehicle Simulation & Physical AI)
+
+# Geospatial Processing & Validation
+geopandas>=0.14.0
+shapely>=2.0.0
+osmnx>=1.9.0
+pyproj>=3.6.0
+
+# User Interface & Interactive Maps
+streamlit>=1.30.0
+folium>=0.15.0
+streamlit-folium>=0.16.0
+pydeck>=0.8.0
+
+# Data Analysis & Scientific Computation
+pandas>=2.1.0
+numpy>=1.26.0
+networkx>=3.2.0
+
+# Quality Reporting & Visualization
+plotly>=5.18.0
+openpyxl>=3.1.2
+xlsxwriter>=3.1.9
+
+# Automated Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0

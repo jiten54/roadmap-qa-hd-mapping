@@ -1,0 +1,145 @@
+{
+  "type": "FeatureCollection",
+  "name": "SF_AV_Testing_Grid_Benchmark",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "SEG_01",
+      "properties": {
+        "name": "Folsom St (West)",
+        "roadClass": "primary",
+        "lanes": 3,
+        "speedLimitKph": 45,
+        "isOneWay": true,
+        "surface": "asphalt"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-122.4020, 37.7890],
+          [-122.3990, 37.7890]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEG_02",
+      "properties": {
+        "name": "Folsom St (Central)",
+        "roadClass": "primary",
+        "lanes": 3,
+        "speedLimitKph": 45,
+        "isOneWay": true,
+        "surface": "asphalt"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-122.3990, 37.7890],
+          [-122.3960, 37.7890]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEG_MICRO_01",
+      "properties": {
+        "name": "Alley Micro-Spur",
+        "roadClass": "service",
+        "lanes": 1,
+        "speedLimitKph": 15,
+        "isOneWay": false,
+        "surface": "asphalt"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-122.3970, 37.7870],
+          [-122.397008, 37.787006]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEG_DUP_08",
+      "properties": {
+        "name": "Howard St Duplicate Ghost Segment",
+        "roadClass": "primary",
+        "lanes": 3,
+        "speedLimitKph": 45,
+        "isOneWay": true,
+        "surface": "asphalt"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-122.4020, 37.7865],
+          [-122.3990, 37.7865]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEG_MISSING_SPEED",
+      "properties": {
+        "name": "Natoma Connector (Missing Speed Limit)",
+        "roadClass": "primary",
+        "lanes": 2,
+        "speedLimitKph": 0,
+        "isOneWay": false,
+        "surface": "asphalt"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-122.3960, 37.7875],
+          [-122.3930, 37.7875]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEG_LANE_OVERFLOW",
+      "properties": {
+        "name": "Tehama Alley (Excessive Lane Count)",
+        "roadClass": "residential",
+        "lanes": 6,
+        "speedLimitKph": 25,
+        "isOneWay": false,
+        "surface": "asphalt"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-122.3990, 37.7855],
+          [-122.3960, 37.7855]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEG_ISLAND_01",
+      "properties": {
+        "name": "Isolated Yard Test Loop",
+        "roadClass": "service",
+        "lanes": 1,
+        "speedLimitKph": 20,
+        "isOneWay": false,
+        "surface": "concrete"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-122.4040, 37.7875],
+          [-122.4040, 37.7855]
+        ]
+      }
+    }
+  ]
+}

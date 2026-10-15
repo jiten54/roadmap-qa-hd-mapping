@@ -1,0 +1,8 @@
+{
+  "name": "RoadMap QA — Road Network Mapping & Quality Validation System",
+  "description": "Enterprise GIS road network quality assurance and geometric validation system for autonomous vehicle simulation and Physical AI maps.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
