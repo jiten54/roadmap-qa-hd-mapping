@@ -1,168 +1,228 @@
-# RoadMap QA — Road Network Mapping & Quality Validation System
+# RoadMap QA — HD Mapping & Quality Validation System
+<img width="1914" height="869" alt="Screenshot 2026-10-16 045612" src="https://github.com/user-attachments/assets/5bb770fa-4fd9-4bbf-b861-5b2f0ea55cdb" />
 
-An enterprise GIS road network quality assurance and geometric validation system engineered specifically for **Autonomous Vehicle (AV) Simulation**, **SimForge**, and **Physical AI** applications.
+A GIS-based road network mapping and quality assurance project designed to validate road geometry, analyze network connectivity, check map attributes, and generate geospatial quality reports.
 
-Developed for the **SimForge Mapping Analyst** role, this system validates physical road geometries, intersection approach angles, planar graph connectivity, lawful speed limits, and lane-level attributes before HD maps are ingested into simulation physics engines.
+## Overview
 
----
+RoadMap QA is a geospatial analytics portfolio project focused on improving the structural quality and consistency of digital road-network data used in mapping, navigation, simulation, and autonomous driving applications.
 
-## 🎯 Executive Objective & SimForge Role Alignment
+The system processes road-network datasets, identifies potential geometry and connectivity issues, validates road attributes, and provides a structured workflow for reviewing and documenting map-quality problems.
 
-In autonomous driving simulation engines (such as SimForge, Carla, and OpenDRIVE), simulation realism and vehicle safety depend strictly on topological and geometric map invariants:
-- A **0.5m snapping gap** or missing junction node will cause global path planners to fail, stranding autonomous vehicles or causing illegal turn attempts.
-- A **micro-segment (<3.0m)** causes floating-point numerical instability in spline trajectory generators and physics solvers.
-- An **acute intersection angle (<20°)** creates impossible vehicle turning radii and vehicle collision bounding box glitches.
-- A **missing speed limit or contradictory one-way tag** leads to severe simulation errors, such as vehicles entering permanent dead-end sink traps.
+The project demonstrates practical skills in geospatial data processing, analytical reasoning, data validation, quality assurance, and Excel reporting.
 
-**RoadMap QA** automates the detection, classification, triage, and reporting of these mission-critical discrepancies, pairing automated geometric algorithms with human-in-the-loop audit workflows.
+## Objectives
 
----
+- Import and inspect road-network datasets.
+- Validate road geometry and feature attributes.
+- Identify duplicate or incomplete road records.
+- Analyze road-network connectivity and potential gaps.
+- Validate road classifications, directions, and speed-limit attributes.
+- Review lane and traffic-control information where available.
+- Maintain a quality issue log and track corrections.
+- Generate Excel reports and GIS-compatible exports.
 
-## 🏗️ System Architecture & Technology Stack
+## Key Features
 
-The project provides a production-grade dual architecture:
-1. **Interactive Web Operations Console** (Vite + React 19 + TypeScript + Leaflet + Tailwind CSS + SheetJS): Runs seamlessly in the browser with high-performance vector rendering, ESRI World Imagery satellite comparison, and 1-click Excel/GIS exports.
-2. **Python GIS & Validation Core** (`roadmap_qa/` + Streamlit + Pytest): Modular Python geospatial processing engine with metric geodesic math, graph algorithms, SQLite persistence, and automated unit test suite.
+### 1. Geospatial Data Import
 
-```
-roadmap-qa/
-├── src/                          # Interactive GIS Operations Console (React/TS/Leaflet)
-│   ├── components/               # UI Modules (Navbar, Sidebar, ImportModal)
-│   │   └── views/                # 9 Distinct Workflow Views
-│   ├── utils/                    # Geodesic Math, Validation Engine, Excel & QGIS Exporters
-│   ├── types/                    # Domain Type Specifications
-│   └── data/                     # Seeded Ground-Truth Benchmark Datasets
-├── roadmap_qa/                   # Python Geospatial Processing Package
-│   ├── core/                     # CRS handling (EPSG:4326 to UTM) & Haversine geodesy
-│   ├── validators/               # Geometry, Connectivity & Attribute validators
-│   └── reporting/                # SQLite audit trail & Excel reporting
-├── tests/                        # Automated Test Suite (unittest & pytest compatible)
-│   └── test_validation.py        # 8/8 Unit tests passing with 100% coverage
-├── sample_data/                  # Reproducible test datasets (GeoJSON)
-├── streamlit_app.py              # Streamlit GIS Interface
-├── requirements.txt              # Documented Python dependencies
-└── README.md                     # Portfolio Documentation & Engineering Specs
-```
+Support common GIS formats, including:
 
----
+- GeoJSON
+- GeoPackage
+- Shapefile
+- CSV files containing coordinates and road attributes
 
-## 🔍 Validation Rules Catalog & Severity Matrix
+Validate input structures, coordinate reference systems, missing geometries, and required fields before processing.
 
-RoadMap QA evaluates all road network features against deterministic rules:
+### 2. Interactive Road Map
 
-| Rule Code | Category | Severity | Description | SimForge AV Simulation Impact |
-| :--- | :--- | :--- | :--- | :--- |
-| **G01** | Geometry | **Critical** | Micro-segment detection ($<3.0\text{m}$) | Physics solver step failure & trajectory collapse |
-| **G02** | Geometry | **Critical** | Self-intersecting polyline geometry | Polygon tessellation breakdown & lane boundary crash |
-| **G03** | Geometry | **Critical** | Duplicate road segment geometry | Routing ambiguity and phantom obstacle reflections |
-| **G04** | Geometry | **Critical** | Dangling endpoint snapping gap ($<2.5\text{m}$) | Motion planner loses continuity between road bounds |
-| **G05** | Geometry | **Major** | Acute intersection approach angle ($<20.0^\circ$) | Violates minimum vehicle turning kinematics |
-| **C01** | Connectivity | **Advisory** | Dead-end / boundary stub (Degree 1) | Requires verification for authentic turnaround bulb |
-| **C02** | Connectivity | **Critical** | Isolated subgraph component island | Spawned vehicles trapped with no egress to destination |
-| **L01** | Attributes | **Critical** | Missing or non-positive speed limit | Velocity controller stalls or causes emergency stops |
-| **L02** | Attributes | **Major** | Unrealistic lane count (e.g. residential $>4$ lanes) | Synthetic traffic spawning causes unrealistic congestion |
-| **L04** | Traffic Control | **Critical** | One-way vehicle sink trap at dead end | Vehicles enter terminal street with no legal exit |
-| **L06** | Traffic Control | **Major** | Missing road markings on high-speed road | Camera & LiDAR perception models fail lane detection |
+Visualize road segments, intersections, road classifications, and flagged quality issues on an interactive map.
 
----
+Allow users to inspect individual features, filter map layers, and review associated road attributes.
 
-## 🗺️ Core Application Features
+### 3. Geometry Validation
 
-### 1. Interactive Mapping Dashboard
-Displays real-time metrics computed directly from loaded features:
-- Total road segments & total network kilometers
-- Intersection node approach degree distribution
-- Critical simulation blockers vs. advisory findings
-- Real-time SimForge Simulation Readiness Attestation (PASS / FAIL gate)
+Identify potential issues such as:
 
-### 2. High-Resolution Aerial Imagery Comparison
-- Side-by-side and overlaid comparison against **ESRI World Imagery** satellite photography.
-- Configurable transparency slider (20% – 100%) to visually verify physical pavement edges and curbs against digitized vector centerlines.
-- Interactive **Aerial Discrepancy Pin Tool** to log manual imagery audit findings directly into the QA queue.
+- Invalid or empty geometries
+- Duplicate road segments
+- Zero-length features
+- Unexpected geometry types
+- Suspicious road endpoints
+- Missing road attributes
 
-### 3. Road Segment Inventory & Inline Attribute Editor
-- Searchable and filterable data grid (filter by Road Class, Lane Count, Speed Limit, and QA Status).
-- Instant inline editing with real-time re-validation to immediately test attribute fixes.
+### 4. Network Connectivity Analysis
 
-### 4. Graph Network Connectivity Analysis
-- Adjacency graph traversal identifying connected components and isolated network partitions.
-- Junction node degree classification (Dead-ends, Through roads, T-junctions, 4-way crossings, and complex 5+ arm intersections).
+Analyze road segments as a graph to identify disconnected components, isolated segments, possible network gaps, and unusual intersection connectivity.
 
-### 5. Lane & Traffic Attribute Governance
-- Distinguishes macroscopic road centerlines from microscopic HD lane topology.
-- Includes a clearly labeled **Synthetic HD Lane Demonstration Model** showing Carla OpenDRIVE and SimForge lane boundary cross-sections.
+Connectivity checks use documented assumptions and appropriate distance tolerances.
 
-### 6. Human-in-the-Loop Quality Assurance Workflow
-- Audit queue supporting `Open`, `Under Review`, `Resolved`, and `False Positive` statuses.
-- Captures reviewer justification notes in a permanent, immutable audit trail.
+### 5. Road Attribute Validation
 
-### 7. 10-Sheet Microsoft Excel (.xlsx) Quality Audit Export
-Generates a complete, multi-sheet workbook including:
-1. `Executive Summary`
-2. `Road Segment Inventory`
-3. `Attribute Completeness Matrix`
-4. `Geometry Validation Results`
-5. `Connectivity Issues`
-6. `Intersection Checks`
-7. `Lane & Traffic Checks`
-8. `Manual Review Queue`
-9. `Audit Trail Log`
-10. `Final Quality Summary & Sign-Off`
+Check road classifications, direction attributes, speed limits, lane counts, and other available fields for missing or inconsistent values.
 
-Also exports QGIS-compatible GeoJSON centerlines, issue marker points, and CSV tables.
+Lane connectivity, traffic signs, signals, and lane markings require suitable source data and must be verified independently.
 
----
+### 6. Quality Assurance Workflow
 
-## 🧪 Automated Testing & Ground Truth Verification
+Maintain a structured issue register containing:
 
-The codebase includes an automated unit test suite with 100% test coverage over all core validation rules.
+- Issue ID
+- Road segment ID
+- Issue category
+- Severity
+- Location
+- Description
+- Suggested corrective action
+- Review status
+- Reviewer notes
 
-### Running Python Tests
+Support review statuses such as Open, Under Review, Resolved, and False Positive.
+
+### 7. Excel Reporting
+
+Generate structured reports covering road inventory, geometry checks, connectivity issues, attribute completeness, and quality-review status.
+
+Reports should use readable formatting, filters, conditional formatting, and summary charts where appropriate.
+
+### 8. GIS Data Export
+
+Export validated or reviewed data in appropriate formats, including GeoJSON, GeoPackage, and CSV, while preserving original records and documenting any changes.
+
+## Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| Python | Application logic |
+| Streamlit | Interactive interface |
+| GeoPandas | Geospatial data processing |
+| Shapely | Geometry validation |
+| OSMnx | Road-network data processing |
+| Pandas and NumPy | Data analysis |
+| Folium | Interactive map visualization |
+| Plotly | Charts and reporting |
+| SQLite | Quality issue storage |
+| OpenPyXL | Excel report generation |
+| Pytest | Automated testing |
+
+Adjust this list to match the technologies actually implemented in the repository.
+
+## Project Workflow
+
+1. Import a road-network dataset.
+2. Inspect its coordinate reference system and attributes.
+3. Validate geometry and required fields.
+4. Analyze road-network connectivity.
+5. Flag suspicious or incomplete records.
+6. Review issues and document decisions.
+7. Export quality reports and GIS-compatible files.
+
+## Installation
+
+### Prerequisites
+
+- Python 3.10 or later
+- Git
+- A supported operating system
+
+### Clone the Repository
+
 ```bash
-python3 -m unittest discover tests
-```
-*Result: 8 tests passed in 0.002s (100% success).*
-
-### Interactive Test Runner in the App
-The **Documentation & Tests** tab in the web console provides a live **Automated Test Suite Runner**, executing tests with real millisecond latency metrics.
-
----
-
-## 🚀 Local Installation & Execution
-
-### Running the Web Operations Console
-```bash
-# Install dependencies
-npm install
-
-# Start local development server on port 3000
-npm run dev
+git clone https://github.com/jiten54/roadmap-qa-hd-mapping.git
+cd roadmap-qa-hd-mapping
 ```
 
-### Running the Streamlit Interface
+### Create a Virtual Environment
+
 ```bash
-# Install Python requirements
+python -m venv .venv
+```
+
+Activate it on Windows PowerShell:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+On Linux or macOS:
+
+```bash
+source .venv/bin/activate
+```
+
+### Install Dependencies
+
+```bash
 pip install -r requirements.txt
-
-# Launch Streamlit app
-streamlit run streamlit_app.py
 ```
 
+### Run the Application
+
+```bash
+streamlit run app.py
+```
+
+Adjust the entry-point filename if the final project uses a different structure.
+
+## Testing
+
+Run automated tests with:
+
+```bash
+pytest
+```
+
+Tests should cover geometry validation, missing attributes, duplicate detection, connectivity checks, and export behavior.
+
+Document actual test results rather than claiming unverified performance.
+
+## Sample Data and Evaluation
+
+The project can use synthetic road networks for reproducible demonstrations and permitted public geospatial datasets for additional testing.
+
+Synthetic datasets should contain known examples of disconnected segments, duplicate features, invalid geometries, and missing attributes.
+
+Validation results should be compared against expected outcomes. Do not report fabricated accuracy figures or present synthetic results as real-world mapping performance.
+
+## Limitations
+
+- Geometric checks cannot establish that a road matches the real world without reliable reference data.
+- Connectivity findings depend on coordinate systems, snapping tolerances, and network assumptions.
+- Lane-level geometry, traffic controls, and road markings require appropriate detailed source data.
+- Automated flags identify potential issues; human verification may still be necessary.
+
+## Future Improvements
+
+- Add detailed lane-level map editing.
+- Support LiDAR-derived road features where suitable data is available.
+- Add reference imagery comparison.
+- Improve intersection and navigation connectivity validation.
+- Introduce reviewer permissions and richer audit history.
+- Add automated regression tests for map-quality rules.
+
+## Skills Demonstrated
+
+- Geospatial data processing
+- Road-network validation
+- Geometry and attribute quality checks
+- Network connectivity analysis
+- GIS data formats and coordinate systems
+- Data cleaning and verification
+- Excel reporting
+- Structured quality assurance
+- Documentation and testing
+
+## Disclaimer
+
+RoadMap QA is an independent portfolio project and is not affiliated with or endorsed by SimForge. It does not claim professional-grade HD map accuracy unless that capability has been independently implemented and validated.
+
+## Author
+
+**Jiten Moni Das**
+
+GitHub: https://github.com/jiten54
+
 ---
 
-## 📄 QGIS Desktop Import Instructions
-
-1. Export the **Road Centerlines GeoJSON** and **Quality Issues GeoJSON** from the Excel Reports view.
-2. In QGIS, navigate to `Layer > Add Layer > Add Vector Layer...` and select the GeoJSON files.
-3. Apply categorized symbology on the `road_class` attribute to render standard AV simulation hierarchy.
-4. Overlay the **Quality Issues** layer with point markers sized by `severity` (`Critical` = Red, `Major` = Amber).
-
----
-
-## 👤 Author & Job Context
-
-Designed as a showcase for the **SimForge Mapping Analyst** role, demonstrating end-to-end expertise in:
-- High-definition road network topology & autonomous vehicle simulation standards
-- Geodesic spatial algorithms (Haversine metric distance & snapping tolerances)
-- Data quality assurance pipelines & Excel reporting
-- Attention to detail, boundary conditions, and human-in-the-loop audit trails.
+*Developed as a portfolio project to demonstrate geospatial data validation and mapping quality assurance skills relevant to entry-level Mapping Analyst roles.*
